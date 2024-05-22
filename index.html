@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Image Cropper</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+      window.onload = function() {
+        const imageFile = "{{ url_for('static', filename=image_file) }}";
+        const script = document.createElement('script');
+        script.src = "{{ url_for('static', filename='script.js') }}";
+        script.onload = function() {
+          initCanvas(imageFile);
+        };
+        document.head.appendChild(script);
+      };
+    </script>
+  </head>
+  <body>
+    <canvas id="imageCanvas"></canvas>
+    <form action="/crop" method="post">
+      <label for="startX">L:</label>
+      <input type="number" id="startX" name="startX" />
+      <label for="startY">T:</label>
+      <input type="number" id="startY" name="startY" />
+      <label for="endX">R:</label>
+      <input type="number" id="endX" name="endX" />
+      <label for="endY">B:</label>
+      <input type="number" id="endY" name="endY" />
+      <label for="filename">File Name:</label>
+      <input type="text" id="filename" name="filename" />
+      <button type="submit">Crop Image</button>
+    </form>
+    <div id="errorToast" class="error-toast"></div>
+  </body>
+</html>
