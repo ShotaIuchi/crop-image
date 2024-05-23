@@ -16,12 +16,12 @@ OUTPUT_DIR = os.getenv('OUTPUT_DIR', 'output')
 # Flask engine
 app = Flask(__name__, template_folder='.')
 
-# crop-image page
+
 @app.route('/')
 def home():
     return render_template('index.html', image_file=IMAGE_PATH)
 
-# crop
+
 @app.route('/crop', methods=['POST'])
 def crop():
     # request parameters
@@ -68,6 +68,7 @@ def crop():
     cropped_img.save(img_io, 'PNG')
     img_io.seek(0)
     return send_file(img_io, mimetype='image/png')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

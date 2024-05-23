@@ -3,13 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <title>Image Cropper</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
     <script>
-      window.onload = function() {
+      window.onload = function () {
         const imageFile = "{{ url_for('static', filename=image_file) }}";
-        const script = document.createElement('script');
+        const script = document.createElement("script");
         script.src = "{{ url_for('static', filename='script.js') }}";
-        script.onload = function() {
+        script.onload = function () {
           initCanvas(imageFile);
         };
         document.head.appendChild(script);

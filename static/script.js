@@ -80,7 +80,7 @@ function initCanvas(imageFile) {
     }
   }
 
-  document.querySelector('form').onsubmit = function (e) {
+  document.querySelector("form").onsubmit = function (e) {
     const filename = document.getElementById("filename").value.trim();
     if (!filename) {
       showErrorToast("Please enter a file name.");
