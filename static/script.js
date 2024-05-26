@@ -121,3 +121,15 @@ function initCanvas(imageFile) {
     }, 3000);
   }
 }
+
+document.getElementById("updateImageButton").onclick = function () {
+  fetch("/update-image", { method: "POST" })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        location.reload();
+      } else {
+        alert("Failed to update image");
+      }
+    });
+};

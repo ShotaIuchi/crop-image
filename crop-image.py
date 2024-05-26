@@ -4,8 +4,9 @@
 from datetime import datetime
 import io
 import os
-from flask import Flask, request, send_file, render_template, abort
+from flask import Flask, request, send_file, render_template, abort, jsonify
 from PIL import Image
+import adb_tool_py as adb_tool
 
 # Input image file path
 IMAGE_PATH = os.getenv('IMAGE_PATH', 'input.png')
@@ -68,6 +69,17 @@ def crop():
     cropped_img.save(img_io, 'PNG')
     img_io.seek(0)
     return send_file(img_io, mimetype='image/png')
+
+
+@app.route('/update-image', methods=['POST'])
+def update_image():
+    try:
+        adb = adb_tool.AdbTool()
+        adb.capture_screenshot()
+        adb.save_screenshot("./static/input.png")
+        return jsonify(success=True)
+    except Exception as e:
+        return jsonify(success=False, error=str(e))
 
 
 if __name__ == '__main__':
