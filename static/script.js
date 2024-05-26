@@ -112,24 +112,49 @@ function initCanvas(imageFile) {
     }
   };
 
-  function showErrorToast(message) {
-    const toast = document.getElementById("errorToast");
-    toast.textContent = message;
-    toast.className = "error-toast show";
-    setTimeout(function () {
-      toast.className = toast.className.replace("show", "");
-    }, 3000);
-  }
+  document.getElementById("updateImage").onclick = function () {
+    const selectedImage = document.getElementById("imageList").value;
+    localStorage.setItem("selectedImage", selectedImage);
+    fetch("/update_image", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ image_src: selectedImage }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          location.reload();
+        } else {
+          showErrorToast("Failed to update image.");
+        }
+      });
+  };
 }
-
-document.getElementById("updateImageButton").onclick = function () {
-  fetch("/update-image", { method: "POST" })
+function fetchImageList() {
+  fetch("/image_list")
     .then((response) => response.json())
     .then((data) => {
-      if (data.success) {
-        location.reload();
-      } else {
-        alert("Failed to update image");
-      }
+      const imageList = document.getElementById("imageList");
+      const selectedImage = localStorage.getItem("selectedImage");
+      data.images.forEach((image) => {
+        const option = document.createElement("option");
+        option.value = image;
+        option.textContent = image;
+        if (image === selectedImage) {
+          option.selected = true;
+        }
+        imageList.appendChild(option);
+      });
     });
-};
+}
+
+function showErrorToast(message) {
+  const toast = document.getElementById("errorToast");
+  toast.textContent = message;
+  toast.className = "error-toast show";
+  setTimeout(function () {
+    toast.className = toast.className.replace("show", "");
+  }, 3000);
+}

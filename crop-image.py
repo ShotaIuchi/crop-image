@@ -6,7 +6,8 @@ import io
 import os
 from flask import Flask, request, send_file, render_template, abort, jsonify
 from PIL import Image
-import adb_tool_py as adb_tool
+from update_image import UpdateImage
+from update_image_adb import *
 
 # Input image file path
 IMAGE_PATH = os.getenv('IMAGE_PATH', 'input.png')
@@ -17,6 +18,7 @@ OUTPUT_DIR = os.getenv('OUTPUT_DIR', 'output')
 # Flask engine
 app = Flask(__name__, template_folder='.')
 
+g_update_image_name:str = UpdateImage.s_update_func_list[0].get_name()
 
 @app.route('/')
 def home():
@@ -70,13 +72,25 @@ def crop():
     img_io.seek(0)
     return send_file(img_io, mimetype='image/png')
 
+@app.route('/image_list', methods=['GET'])
+def image_list():
+    images:list = []
+    for ui in UpdateImage.s_update_func_list:
+        images.append(ui.get_name())
+    return jsonify({"images": images})
 
-@app.route('/update-image', methods=['POST'])
+@app.route('/update_image', methods=['POST'])
 def update_image():
+    global g_update_image_name
+    data = request.json
+    image_src = data.get('image_src', g_update_image_name)
+    update_image: UpdateImage = None
+    for ui in UpdateImage.s_update_func_list:
+        if ui.get_name() == image_src:
+            update_image = ui
+            break
     try:
-        adb = adb_tool.AdbTool()
-        adb.capture_screenshot()
-        adb.save_screenshot("./static/input.png")
+        update_image.update()
         return jsonify(success=True)
     except Exception as e:
         return jsonify(success=False, error=str(e))
