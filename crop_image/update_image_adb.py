@@ -1,4 +1,4 @@
-from update_image import UpdateImage
+from crop_image.update_image import UpdateImage
 import adb_tool_py as adb_tool
 import adb_tool_py.command as command
 
