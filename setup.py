@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='crop-image',
+    name='cropimg',
     version='0.1.0',
     packages=find_packages(),
     install_requires=[
@@ -11,7 +11,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'crop_image=crop_image.crop_image:main',
+            'cropimg=crop_image.crop_image:main',
         ],
     },
     author='Shota Iuchi',
