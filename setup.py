@@ -11,7 +11,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'cropimg=crop_image.crop_image:main',
+            'cropimg=cropimg.cropimg:main',
         ],
     },
     author='Shota Iuchi',
