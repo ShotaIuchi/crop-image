@@ -24,8 +24,8 @@ To install and set up this project, follow the steps below:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/image-cropper.git
-    cd image-cropper
+    git clone https://github.com/ShotaIuchi/crop-image.git
+    cd cropimg
     ```
 
 2. Create and activate a virtual environment:
@@ -41,7 +41,8 @@ To install and set up this project, follow the steps below:
 
 4. Run the application:
     ```bash
-    python app.py
+    cd cropimg
+    python cropimg.py
     ```
 
 ### Install via `pip`
@@ -50,12 +51,12 @@ If the package is available on PyPI, you can install it using `pip`:
 
 1. Install the package:
     ```bash
-    pip install image-cropper
+    pip install cropimg
     ```
 
 2. Run the application:
     ```bash
-    image-cropper
+    cropimg
     ```
 
 ## Usage
@@ -65,31 +66,11 @@ If the package is available on PyPI, you can install it using `pip`:
 3. Draw a rectangle on the canvas to specify the crop area.
 4. Enter the desired file name in the form and click "Crop Image" to save the cropped image.
 
-## File Structure
-
-- `app.py`: The main application file.
-- `templates/index.html`: The main HTML file for the web interface.
-- `static/styles.css`: The CSS file for styling the web interface.
-- `static/script.js`: The JavaScript file for handling canvas interactions.
-- `crop-image.py`: Script for handling image cropping.
-- `update_image.py`: Script for updating images.
-- `update_image_adb.py`: Script for handling ADB-related image updates.
-- `setup.py`: The setup script for packaging the project.
-
-## Dependencies
-
-This project requires the following dependencies:
-
-- Flask
-- Pillow
-
-Install these dependencies using `pip` as described in the installation section.
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 ## Contact
 
-For any questions or inquiries, please contact [yourname@example.com](mailto:yourname@example.com).
+For any questions or inquiries, please contact [shotaiuchi.develop@gmail.com](mailto:shotaiuchi.develop@gmail.com)
 
