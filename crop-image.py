@@ -4,21 +4,24 @@
 from datetime import datetime
 import io
 import os
+import base64
 from flask import Flask, request, send_file, render_template, abort, jsonify
 from PIL import Image
 from update_image import UpdateImage
 from update_image_adb import *
 
 # Input image file path
-IMAGE_PATH = os.getenv('IMAGE_PATH', 'input.png')
+IMAGE_PATH = os.path.join(os.getcwd(), 'static', 'input.png')
 
 # Output image directory
-OUTPUT_DIR = os.getenv('OUTPUT_DIR', 'output')
+OUTPUT_DIR = os.path.join(os.getcwd(), 'output')
 
 # Flask engine
 app = Flask(__name__, template_folder='.')
 
-g_update_image_name:str = UpdateImage.s_update_func_list[0].get_name()
+# Update image object name
+g_update_image_name: str = UpdateImage.s_update_func_list[0].get_name()
+
 
 @app.route('/')
 def home():
@@ -72,25 +75,37 @@ def crop():
     img_io.seek(0)
     return send_file(img_io, mimetype='image/png')
 
+
 @app.route('/image_list', methods=['GET'])
 def image_list():
-    images:list = []
+    images: list = []
     for ui in UpdateImage.s_update_func_list:
         images.append(ui.get_name())
     return jsonify({"images": images})
+
+
+@app.route('/get_image', methods=['GET'])
+def get_image():
+    if os.path.exists(IMAGE_PATH):
+        with open(IMAGE_PATH, "rb") as image_file:
+            encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
+        return jsonify({"image": encoded_image})
+    else:
+        return jsonify({"error": "Image not found"}), 404
+
 
 @app.route('/update_image', methods=['POST'])
 def update_image():
     global g_update_image_name
     data = request.json
-    image_src = data.get('image_src', g_update_image_name)
+    image_src = data.get('image', g_update_image_name)
     update_image: UpdateImage = None
     for ui in UpdateImage.s_update_func_list:
         if ui.get_name() == image_src:
             update_image = ui
             break
     try:
-        update_image.update()
+        update_image.update(IMAGE_PATH)
         return jsonify(success=True)
     except Exception as e:
         return jsonify(success=False, error=str(e))

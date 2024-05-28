@@ -4,14 +4,14 @@ import adb_tool_py.command as command
 
 
 class UpdateImageAdb(UpdateImage):
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(self, name)
 
-    def update(self):
+    def update(self, path:str) -> bool:
         adb = adb_tool.AdbTool(serial=self.get_name())
         adb.capture_screenshot()
-        adb.save_screenshot("./static/input.png")
-
+        adb.save_screenshot(path)
+        return True
 
 result = command.command('adb', 'devices')
 lines = result.stdout.splitlines()

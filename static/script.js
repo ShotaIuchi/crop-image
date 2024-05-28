@@ -1,4 +1,4 @@
-function initCanvas(imageFile) {
+function initCanvas(imageData) {
   const canvas = document.getElementById("imageCanvas");
   const ctx = canvas.getContext("2d");
   const img = new Image();
@@ -9,7 +9,7 @@ function initCanvas(imageFile) {
     restoreRectangle();
   };
 
-  img.src = imageFile;
+  img.src = `data:image/png;base64,${imageData}`;
 
   let isDown = false;
   let startX = 0;
@@ -111,7 +111,9 @@ function initCanvas(imageFile) {
       e.preventDefault();
     }
   };
+}
 
+window.onload = function () {
   document.getElementById("updateImage").onclick = function () {
     const selectedImage = document.getElementById("imageList").value;
     localStorage.setItem("selectedImage", selectedImage);
@@ -120,18 +122,24 @@ function initCanvas(imageFile) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ image_src: selectedImage }),
+      body: JSON.stringify({ image: selectedImage }),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          location.reload();
-        } else {
-          showErrorToast("Failed to update image.");
-        }
-      });
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        fetchImage(selectedImage);
+      } else {
+        showErrorToast("Failed to update image.");
+      }
+    });
   };
+
+  fetchImageList();
+
+  const selectedImage = localStorage.getItem("selectedImage") || "input.png";
+  fetchImage(selectedImage);
 }
+
 function fetchImageList() {
   fetch("/image_list")
     .then((response) => response.json())
@@ -147,6 +155,18 @@ function fetchImageList() {
         }
         imageList.appendChild(option);
       });
+    });
+}
+
+function fetchImage(imageName) {
+  fetch(`/get_image?image=${imageName}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.image) {
+        initCanvas(data.image);
+      } else {
+        showErrorToast("Failed to load image.");
+      }
     });
 }
 

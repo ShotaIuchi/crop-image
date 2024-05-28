@@ -5,13 +5,6 @@
   <title>Image Cropper</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
   <script src="{{ url_for('static', filename='script.js') }}"></script>
-  <script>
-    window.onload = function () {
-      fetchImageList();
-      const imageFile = "{{ url_for('static', filename='input.png') }}";
-      initCanvas(imageFile);
-    };
-  </script>
 </head>
 <body>
   <div class="container">
