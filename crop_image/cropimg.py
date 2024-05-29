@@ -7,8 +7,9 @@ import os
 import base64
 from flask import Flask, request, send_file, render_template, abort, jsonify
 from PIL import Image
-from cropimg.update_image import UpdateImage
-from cropimg.update_image_adb import *
+from crop_image.update_image import UpdateImage
+from crop_image.update_image_adb import *
+from crop_image.update_image_desktop import *
 
 # Input image file path
 IMAGE_PATH = os.path.join(os.path.dirname(__file__), 'static', 'input.png')

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='cropimg',
-    version='0.1.1',
+    version='0.1.2',
     packages=find_packages(),
     install_requires=[
         'Flask',
@@ -11,7 +11,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'cropimg=cropimg.cropimg:main',
+            'cropimg=crop_image.cropimg:main',
         ],
     },
     author='Shota Iuchi',
